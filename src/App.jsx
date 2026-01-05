@@ -1,32 +1,30 @@
+import { useDispatch } from "react-redux";
 import "./App.css";
 import { ToDoList } from "./components/ToDoList";
 import { useState } from "react";
+import { addToDo } from "./state/toDoSlice";
 function App() {
-  const [toDos, setToDos] = useState([]);   
-  const [text, setText] = useState("");
   
-  console.log(toDos);
+  const [text, setText] = useState("");
+  const dispatch = useDispatch()
+ 
 
-  const addToDo = () => {
-    if (text.trim()) {
-      
-
-      setToDos([
-        ...toDos,
-        {
-          id: Date.now(),
-          text,
-          completed: false,
-        },
-      ]);
-      setText("");
+  // 
+  // const toDoDelete = (id)=>{
+  //    setToDos((prev) => prev.filter((todo) => todo.id !== id));
+  // }
+  // const toggleCompleted = (id)=>{
+  //      setToDos(toDos.map(to => to.id === id ? {...to,completed:!to.completed} :to ))
+  // }
+  const addNewToDo = ()=>{
+    if(text.trim()){
+      dispatch(addToDo(text))       //1. dispatch({
+                                      //type: "todos/addToDo",  - объект в теле dispatch это action объект
+                                      // payload: "купить хлеб"     
+                                    //});
+     
     }
-  };
-  const toDoDelete = (id)=>{
-     setToDos((prev) => prev.filter((todo) => todo.id !== id));
-  }
-  const toggleCompleted = (id)=>{
-       setToDos(toDos.map(to => to.id === id ? {...to,completed:!to.completed} :to ))
+    setText("")
   }
 
   return (
@@ -37,8 +35,8 @@ function App() {
         onChange={(e) => setText(e.target.value)}
       />
       
-      <button onClick={addToDo}>Добавить задачу</button>
-      <ToDoList toDos={toDos} toDoDelete={toDoDelete} toggleCompleted={toggleCompleted} />
+      <button onClick={addNewToDo}>Добавить задачу</button>
+      <ToDoList  />
 
     </>
   );
